@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Badges | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span>🕒</span><span>🤖</span>
+        </div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a href="dashboard.html">🏠 Dashboard</a>
+        <a href="addtask.html">📝 Tasks</a>
+        <a href="timer.html">⏱️ Timer</a>
+        <a href="prediction.html">📊 Prediction</a>
+        <a class="active" href="badges.html">🏅 Badges</a>
+        <a href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Higher score unlocks badges!</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Digital Badges</h1>
+          <p class="page-sub">Earn badges based on your skill score.</p>
+        </div>
+
+        <div class="profile-box">
+          <div class="profile-circle" id="userInitials">S</div>
+          <div>
+            <h4 id="userName">Student</h4>
+            <p>Latest Score: <b id="latestScore">--</b></p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- BADGE GRID -->
+      <section class="badge-grid" id="badgeGrid"></section>
+
+    </main>
+
+  </div>
+
+
+  <!-- MODAL -->
+  <div class="modal" id="badgeModal">
+    <div class="modal-box">
+      <h2 id="mTitle">Badge</h2>
+      <p id="mDesc">Description</p>
+
+      <div class="modal-actions">
+        <button class="btn btn-primary full" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

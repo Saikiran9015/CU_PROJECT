@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Task | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">🕒🤖</div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a href="dashboard.html">🏠 Dashboard</a>
+        <a class="active" href="addtask.html">📝 Tasks</a>
+        <a href="timer.html">⏱️ Timer</a>
+        <a href="prediction.html">📊 Prediction</a>
+        <a href="badges.html">🏅 Badges</a>
+        <a href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Add small tasks first!</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Add New Task</h1>
+          <p class="page-sub">Plan tasks and generate a smart schedule.</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <p id="dbStatus" style="font-size: 11px; opacity: 0.7;"></p>
+          <div class="profile-box">
+            <div class="profile-circle" id="userInitials">S</div>
+            <div>
+              <h4 id="userName">Student</h4>
+              <p>Badge: <b>Consistent 🥈</b></p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- ADD TASK FORM -->
+        <section class="card form-card">
+          <div class="card-head">
+            <h2>📝 Add Task</h2>
+            <p>Add multiple tasks and generate schedule</p>
+          </div>
+
+          <form class="task-form" id="taskForm">
+
+            <div class="form-row">
+              <div class="input-group">
+                <label>Task Title</label>
+                <input id="taskTitle" list="taskSuggestions" type="text" placeholder="Eg: Complete UI Design"
+                  required />
+                <datalist id="taskSuggestions">
+                  <option value="Daily Running">
+                  <option value="Code Part">
+                </datalist>
+              </div>
+
+              <div class="input-group">
+                <label>Priority</label>
+                <select id="taskPr" required>
+                  <option value="Low">Low</option>
+                  <option value="Medium" selected>Medium</option>
+                  <option value="High">High</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Description</label>
+              <textarea id="taskDesc" rows="3" placeholder="Write task details..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label>Date</label>
+                <input id="taskDate" type="date" required />
+              </div>
+
+              <div class="input-group">
+                <label>Estimated Time (minutes)</label>
+                <input id="taskTime" type="number" min="5" placeholder="Eg: 45" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label>Category</label>
+                <select id="taskCat">
+                  <option value="Study">Study</option>
+                  <option value="College Work">College Work</option>
+                  <option value="Project" selected>Project</option>
+                  <option value="Personal">Personal</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="input-group">
+                  <label>Work Type</label>
+                  <select id="workType" required>
+                    <option value="General" selected>General</option>
+                    <option value="Physical">Physical (GPS Tracking)</option>
+                    <option value="Digital">Digital (Coding/Tools)</option>
+                  </select>
+                </div>
+                <div class="input-group">
+                  <label>Status</label>
+                  <select id="taskStatus">
+                    <option value="Pending" selected>Pending</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Completed">Completed</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Physical Work Section -->
+              <div id="physicalSection" class="input-group"
+                style="display: none; border: 1px dashed rgba(255,255,255,0.2); padding: 15px; border-radius: 14px; margin-top: 10px;">
+                <label>📍 Physical Work Settings</label>
+                <div style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+                  <input type="checkbox" id="gpsTracking" style="width: 20px; height: 20px;">
+                  <span>Enable GPS Analysis Tracking</span>
+                </div>
+                <p id="gpsStatus" style="font-size: 12px; opacity: 0.7; margin-top: 10px;">GPS: Inactive</p>
+                <div id="speedAnalysis"
+                  style="display: none; margin-top: 10px; padding: 10px; background: rgba(0, 255, 0, 0.1); border-radius: 8px; font-size: 13px;">
+                  🏃‍♂️ <b>Speed Analysis:</b> <span id="speedValue">0.0</span> km/h
+                </div>
+              </div>
+
+              <!-- Digital Work Section -->
+              <div id="digitalSection" class="input-group"
+                style="display: none; border: 1px dashed rgba(255,255,255,0.2); padding: 15px; border-radius: 14px; margin-top: 10px;">
+                <label>💻 Digital Environment Tools</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;">
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" class="tool-check" value="VS Code"> <span>VS Code</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" class="tool-check" value="Antigravity"> <span>Antigravity</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" class="tool-check" value="GitHub"> <span>GitHub</span>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <input type="checkbox" class="tool-check" value="Terminal"> <span>Terminal</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="reset" class="btn btn-outline">Clear</button>
+                <button type="submit" class="btn btn-primary">Add Task</button>
+              </div>
+
+          </form>
+        </section>
+
+
+        <!-- SAVED TASKS -->
+        <section class="card">
+          <div class="card-head">
+            <h2>📌 Added Tasks</h2>
+            <p>Tasks stored in browser (LocalStorage)</p>
+          </div>
+
+          <div class="task-list" id="savedTaskList"></div>
+        </section>
+
+
+        <!-- SCHEDULE SECTION -->
+        <section class="card">
+          <div class="card-head">
+            <h2>📅 Generate Smart Schedule</h2>
+            <p>Enter your free time and click make schedule</p>
+          </div>
+
+          <div class="form-row">
+            <div class="input-group">
+              <label>Free Start Time</label>
+              <input type="time" id="freeStart" required />
+            </div>
+
+            <div class="input-group">
+              <label>Free End Time</label>
+              <input type="time" id="freeEnd" required />
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button id="makeScheduleBtn" class="btn btn-primary" type="button">
+              📌 Make Schedule
+            </button>
+            <button id="clearAllBtn" class="btn btn-outline" type="button">
+              🗑️ Clear All Tasks
+            </button>
+          </div>
+
+          <div id="scheduleOutput" class="schedule-output"></div>
+        </section>
+
+        <!-- VS CODE WORKSPACE PANEL (Simulated) -->
+        <section id="vscodePanel" class="vscode-panel" style="display: none;">
+          <div class="vscode-header">
+            <div class="vscode-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="vscode-title">Visual Studio Code - SkillTrackAI Workspace</div>
+            <div class="vscode-actions">
+              <button id="closeVSCode" class="mini-btn">✕ Close IDE</button>
+            </div>
+          </div>
+          <div class="vscode-body">
+            <aside class="vscode-side">
+              <div class="act-bar">
+                <span>📄</span><span>🔍</span><span>🌿</span><span>⚙️</span>
+              </div>
+              <div class="explorer">
+                <small>EXPLORER</small>
+                <div class="folder">📁 CU_PROJECT</div>
+                <div class="file active">📄 app.js</div>
+                <div class="file">📄 index.html</div>
+                <div class="file">📄 style.css</div>
+              </div>
+            </aside>
+            <main class="vscode-editor">
+              <div class="editor-tabs">
+                <div class="tab curr">app.js</div>
+                <div class="tab">index.html</div>
+              </div>
+              <div class="code-area">
+                <pre><code><span class="keyword">function</span> <span class="func">trackProductivity</span>() {
+  <span class="keyword">const</span> status = <span class="string">"Coding"</span>;
+  <span class="keyword">let</span> progress = <span class="number">78</span>;
+  <span class="func">console</span>.<span class="func">log</span>(<span class="string">"Monitoring VS Code session..."</span>);
+  <span class="comment">// AI Skill Prediction Active</span>
+}</code></pre>
+              </div>
+              <div class="vscode-terminal">
+                <p>Terminal: skilltrack@ai:~/workspace$ <span class="cursor">_</span></p>
+                <p style="color: #22c55e;">[SUCCESS] Workspace initialized. Ready to code!</p>
+              </div>
+            </main>
+          </div>
+        </section>
+
+    </main>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

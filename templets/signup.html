@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <span class="logo-icon">🕒</span>
+        <span class="logo-ai">🤖</span>
+      </div>
+      <h1 class="brand-title">SkillTrackAI</h1>
+    </div>
+
+    <div class="nav-right">
+      <a href="signin.html" class="btn btn-outline">Sign In</a>
+      <a href="index.html" class="btn btn-primary">Home</a>
+    </div>
+  </header>
+
+
+  <!-- SIGNUP SECTION -->
+  <section class="auth">
+    <div class="auth-card">
+
+      <h2 class="auth-title">Create Your Account ✨</h2>
+      <p class="auth-subtitle">
+        Join SkillTrackAI and start tracking your time management skill.
+      </p>
+
+      <form class="auth-form" id="signupForm">
+
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="signupName" placeholder="Enter your name" required />
+        </div>
+
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail" placeholder="Enter your email" required />
+        </div>
+
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword" placeholder="Create password" required />
+        </div>
+
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="signupConfirmPassword" placeholder="Re-enter password" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary auth-btn">
+          Create Account
+        </button>
+
+        <p class="auth-footer">
+          Already have an account?
+          <a href="signin.html">Sign In</a>
+        </p>
+
+      </form>
+    </div>
+  </section>
+
+
+  <!-- SIGNUP SUCCESS MODAL -->
+  <div class="modal-overlay" id="signupModal">
+    <div class="modal-content">
+      <span class="modal-icon">🎉</span>
+      <h2 class="modal-title" id="signupModalTitle">Account Created!</h2>
+      <p class="modal-text" id="signupModalText">
+        Welcome to <b>SkillTrackAI</b>. Your account has been successfully created.
+        You can now sign in to start tracking your skills.
+      </p>
+      <a href="signin.html" class="btn btn-primary full">Go to Sign In</a>
+    </div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

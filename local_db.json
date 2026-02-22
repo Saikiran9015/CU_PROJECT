@@ -1,0 +1,93 @@
+{
+    "users": [
+        {
+            "name": "Abbu Saikiran",
+            "email": "abbusaikiran1@gmail.com",
+            "password": "Sai9493@#",
+            "_id": "b535a9e1-0735-4ad7-92ed-38ac70cf4ec8"
+        }
+    ],
+    "tasks": [
+        {
+            "title": "Daily Running",
+            "priority": "Medium",
+            "desc": "saikiran",
+            "date": "2026-02-20",
+            "time": 20,
+            "category": "Project",
+            "status": "Pending",
+            "workType": "General",
+            "gpsEnabled": false,
+            "tools": [],
+            "email": "abbusaikiran1@gmail.com",
+            "created_at": "20-02-2026",
+            "_id": "7b68c029-0636-4897-8e53-8282e76c8aa2"
+        },
+        {
+            "title": "Code Part",
+            "priority": "Medium",
+            "desc": "java program",
+            "date": "2026-02-20",
+            "time": 60,
+            "category": "Project",
+            "status": "Pending",
+            "workType": "Digital",
+            "gpsEnabled": false,
+            "tools": [
+                "VS Code"
+            ],
+            "email": "abbusaikiran1@gmail.com",
+            "created_at": "20-02-2026",
+            "_id": "fa7dad20-8898-4ff3-b4a8-c6efc8157520"
+        },
+        {
+            "title": "Daily Running",
+            "priority": "Medium",
+            "desc": "paark",
+            "date": "2026-02-20",
+            "time": 20,
+            "category": "Project",
+            "status": "Completed",
+            "workType": "Physical",
+            "gpsEnabled": true,
+            "tools": [],
+            "email": "abbusaikiran1@gmail.com",
+            "created_at": "20-02-2026",
+            "_id": "f8c71ce8-015c-41f4-a21f-83e44e2bbffe"
+        },
+        {
+            "title": "Code Part",
+            "priority": "Medium",
+            "desc": "hacking",
+            "date": "2026-02-20",
+            "time": 60,
+            "category": "Project",
+            "status": "Pending",
+            "workType": "Digital",
+            "gpsEnabled": false,
+            "tools": [
+                "VS Code"
+            ],
+            "email": "abbusaikiran1@gmail.com",
+            "created_at": "20-02-2026",
+            "_id": "c2421732-6ea9-4ff9-8553-ede3bce78448"
+        },
+        {
+            "title": "Code Part",
+            "priority": "Medium",
+            "desc": "hello world",
+            "date": "2026-02-20",
+            "time": 60,
+            "category": "Project",
+            "status": "Pending",
+            "workType": "Digital",
+            "gpsEnabled": false,
+            "tools": [
+                "VS Code"
+            ],
+            "email": "abbusaikiran1@gmail.com",
+            "created_at": "20-02-2026",
+            "_id": "d2ecb072-4d98-4eba-9bd8-e5554b19e057"
+        }
+    ]
+}

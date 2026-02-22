@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <!-- DASHBOARD LAYOUT -->
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span>🕒</span><span>🤖</span>
+        </div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a class="active" href="dashboard.html">🏠 Dashboard</a>
+        <a href="addtask.html">📝 Tasks</a>
+        <a href="timer.html">⏱️ Timer</a>
+        <a href="prediction.html">📊 Prediction</a>
+        <a href="badges.html">🏅 Badges</a>
+        <a href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Stay consistent daily!</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- TOPBAR -->
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="page-sub">Track tasks, time, and earn badges.</p>
+        </div>
+
+        <div class="top-actions">
+          <p id="dbStatus" style="font-size: 11px; opacity: 0.7; margin-right: 15px;"></p>
+          <button class="mini-btn" id="clearTasksBtn">Clear Tasks</button>
+          <div class="profile-box">
+            <div class="profile-circle" id="userInitials">S</div>
+            <div>
+              <h4 id="userName">Student</h4>
+              <p>Skill Level: <b>Consistent</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- GRID -->
+      <section class="dash-grid">
+
+        <!-- TASKS -->
+        <div class="card big-card">
+          <div class="card-head">
+            <h2>📝 Today's Tasks</h2>
+            <p>Manage your daily goals</p>
+          </div>
+
+          <div class="task-add">
+            <input id="taskInput" type="text" placeholder="Enter a task name..." />
+            <select id="taskPriority">
+              <option value="Low">Low</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="High">High</option>
+            </select>
+            <button class="btn btn-primary" id="addTaskBtn">Add</button>
+          </div>
+
+          <div class="task-list" id="taskList">
+            <!-- Tasks will appear here -->
+          </div>
+        </div>
+
+
+        <!-- TIMER -->
+        <div class="card">
+          <div class="card-head">
+            <h2>⏱️ Focus Timer</h2>
+            <p>Track your real effort</p>
+          </div>
+
+          <div class="timer-box">
+            <h1 id="timerText">00:00:00</h1>
+
+            <div class="timer-buttons">
+              <button class="btn btn-primary" id="startTimer">Start</button>
+              <button class="btn btn-outline" id="pauseTimer">Pause</button>
+              <button class="btn btn-outline" id="resetTimer">Reset</button>
+            </div>
+
+            <p class="timer-note">
+              ⏳ Tip: Use 25–50 mins focus sessions.
+            </p>
+          </div>
+        </div>
+
+
+        <!-- AI SCORE -->
+        <div class="card">
+          <div class="card-head">
+            <h2>📊 AI Skill Score</h2>
+            <p>Prediction (UI demo)</p>
+          </div>
+
+          <div class="score-box">
+            <h1><span id="aiScore">76</span>/100</h1>
+            <p class="score-label">Current Level: <b id="skillLevel">Consistent Performer 🥈</b></p>
+
+            <div class="progress-bar">
+              <div class="progress-fill" id="aiFill"></div>
+            </div>
+
+            <button class="btn btn-primary full" id="updateScoreBtn">
+              Update Score
+            </button>
+          </div>
+        </div>
+
+
+        <!-- BADGE PREVIEW -->
+        <div class="card">
+          <div class="card-head">
+            <h2>🏅 Digital Badge</h2>
+            <p>Your current badge</p>
+          </div>
+
+          <div class="badge-box">
+            <div class="badge-icon" id="badgeIcon">🥈</div>
+            <h3 id="badgeName">Consistent Performer</h3>
+            <p id="badgeDesc">
+              You are doing well! Keep completing tasks daily.
+            </p>
+
+            <a class="btn btn-outline full" href="#">
+              View All Badges
+            </a>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

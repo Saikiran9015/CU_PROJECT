@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skill Prediction | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span>🕒</span><span>🤖</span>
+        </div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a href="dashboard.html">🏠 Dashboard</a>
+        <a href="addtask.html">📝 Tasks</a>
+        <a href="timer.html">⏱️ Timer</a>
+        <a class="active" href="prediction.html">📊 Prediction</a>
+        <a href="badges.html">🏅 Badges</a>
+        <a href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Consistency beats intensity.</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Skill Prediction</h1>
+          <p class="page-sub">Predict your time management skill score.</p>
+        </div>
+
+        <div class="profile-box">
+          <div class="profile-circle" id="userInitials">S</div>
+          <div>
+            <h4 id="userName">Student</h4>
+            <p>AI Mode: <b>Frontend Demo</b></p>
+          </div>
+        </div>
+      </div>
+
+
+      <section class="predict-grid">
+
+        <!-- INPUT CARD -->
+        <div class="card">
+          <div class="card-head">
+            <h2>🧠 Input Data</h2>
+            <p>Enter weekly performance details</p>
+          </div>
+
+          <form id="predictForm" class="predict-form">
+
+            <div class="form-row">
+              <div class="input-group">
+                <label>Task Completion %</label>
+                <input id="comp" type="number" min="0" max="100" placeholder="Eg: 75" required />
+              </div>
+
+              <div class="input-group">
+                <label>Total Focus Minutes</label>
+                <input id="focus" type="number" min="0" placeholder="Eg: 420" required />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="input-group">
+                <label>Sessions Completed</label>
+                <input id="sessions" type="number" min="0" placeholder="Eg: 12" required />
+              </div>
+
+              <div class="input-group">
+                <label>Streak Days</label>
+                <input id="streak" type="number" min="0" placeholder="Eg: 4" required />
+              </div>
+            </div>
+
+            <button class="btn btn-primary full" type="submit">
+              Predict Skill Score
+            </button>
+
+          </form>
+        </div>
+
+
+        <!-- OUTPUT CARD -->
+        <div class="card">
+          <div class="card-head">
+            <h2>📊 Prediction Result</h2>
+            <p>Your time skill score will appear here</p>
+          </div>
+
+          <div class="result-box">
+
+            <div class="score-circle" id="scoreCircle">
+              <h1 id="scoreValue">--</h1>
+              <p>/ 100</p>
+            </div>
+
+            <h2 class="skill-level" id="skillLevel">Enter inputs to predict</h2>
+            <p class="skill-desc" id="skillDesc">
+              This is UI-only demo. Later we will connect ML model.
+            </p>
+
+            <div class="progress-wrap">
+              <div class="progress-label">
+                <span>Skill Progress</span>
+                <span id="progText">0%</span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill" id="progFill"></div>
+              </div>
+            </div>
+
+            <div class="tips" id="tipsBox">
+              <h3>💡 Improvement Tips</h3>
+              <ul>
+                <li>Track tasks daily</li>
+                <li>Use timer for real focus sessions</li>
+                <li>Maintain streak consistency</li>
+              </ul>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

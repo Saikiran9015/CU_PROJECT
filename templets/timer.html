@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Time Tracker | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span>🕒</span><span>🤖</span>
+        </div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a href="dashboard.html">🏠 Dashboard</a>
+        <a href="addtask.html">📝 Tasks</a>
+        <a class="active" href="timer.html">⏱️ Timer</a>
+        <a href="prediction.html">📊 Prediction</a>
+        <a href="badges.html">🏅 Badges</a>
+        <a href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Focus 25 mins then take break!</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Time Tracker</h1>
+          <p class="page-sub">Track real effort spent on tasks.</p>
+        </div>
+
+        <div class="profile-box">
+          <div class="profile-circle" id="userInitials">S</div>
+          <div>
+            <h4 id="userName">Student</h4>
+            <p>Focus Today: <b id="todayFocus">0 mins</b></p>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TIMER GRID -->
+      <section class="timer-grid">
+
+        <!-- TIMER CARD -->
+        <div class="card timer-card">
+          <div class="card-head">
+            <h2>⏱️ Focus Timer</h2>
+            <p>Select a task and start timing</p>
+          </div>
+
+          <div class="timer-select">
+            <label>Select Task</label>
+            <select id="taskSelect">
+              <option value="">-- Choose a task --</option>
+            </select>
+          </div>
+
+          <div class="timer-big">
+            <h1 id="bigTimer">00:00:00</h1>
+            <p class="timer-status" id="timerStatus">Status: Ready</p>
+          </div>
+
+          <div class="timer-buttons">
+            <button class="btn btn-primary" id="tStart">Start</button>
+            <button class="btn btn-outline" id="tPause">Pause</button>
+            <button class="btn btn-outline" id="tStop">Stop</button>
+            <button class="btn btn-outline" id="tReset">Reset</button>
+          </div>
+        </div>
+
+
+        <!-- SESSION HISTORY -->
+        <div class="card">
+          <div class="card-head">
+            <h2>📌 Session History</h2>
+            <p>Saved focus sessions (demo)</p>
+          </div>
+
+          <div class="session-list" id="sessionList"></div>
+
+          <button class="btn btn-outline full" id="clearSessions">
+            Clear Sessions
+          </button>
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

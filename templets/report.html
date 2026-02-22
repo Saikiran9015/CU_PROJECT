@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weekly Report | SkillTrackAI</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+
+<body>
+
+  <div class="dash">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo">
+          <span>🕒</span><span>🤖</span>
+        </div>
+        <div>
+          <h2>SkillTrackAI</h2>
+          <p>Time Skill Tracker</p>
+        </div>
+      </div>
+
+      <nav class="side-links">
+        <a href="dashboard.html">🏠 Dashboard</a>
+        <a href="addtask.html">📝 Tasks</a>
+        <a href="timer.html">⏱️ Timer</a>
+        <a href="prediction.html">📊 Prediction</a>
+        <a href="badges.html">🏅 Badges</a>
+        <a class="active" href="report.html">📅 Reports</a>
+        <a href="index.html" id="logoutLink">🚪 Logout</a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <p>💡 Tip: Weekly reflection boosts progress!</p>
+      </div>
+    </aside>
+
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="topbar">
+        <div>
+          <h1 class="page-title">Profile & Weekly Report</h1>
+          <p class="page-sub">Your weekly performance summary.</p>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <p id="dbStatus" style="font-size: 11px; opacity: 0.7;"></p>
+          <div class="profile-box">
+            <div class="profile-circle" id="userInitials">S</div>
+            <div>
+              <h4 id="userName">Student</h4>
+              <p>Score: <b id="reportScore">--</b> / 100</p>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- TOP GRID -->
+        <section class="report-grid">
+
+          <!-- PROFILE CARD -->
+          <div class="card profile-card">
+            <div class="card-head">
+              <h2>👤 Profile</h2>
+              <p>Your details</p>
+            </div>
+
+            <div class="profile-main">
+              <div class="profile-big" id="userInitialsBig">S</div>
+              <div>
+                <h3 id="profileName">Student</h3>
+                <p class="muted">SkillTrackAI User</p>
+                <p class="muted" id="userEmail">Email: student@gmail.com</p>
+              </div>
+            </div>
+
+            <div class="mini-stats">
+              <div class="mini">
+                <h4 id="miniFocus">0</h4>
+                <p>Focus mins</p>
+              </div>
+              <div class="mini">
+                <h4 id="miniSessions">0</h4>
+                <p>Sessions</p>
+              </div>
+              <div class="mini">
+                <h4 id="miniTasks">0</h4>
+                <p>Tasks</p>
+              </div>
+            </div>
+          </div>
+
+
+          <!-- WEEK SUMMARY -->
+          <div class="card">
+            <div class="card-head">
+              <h2>📌 Weekly Summary</h2>
+              <p>Overview (demo based on saved sessions)</p>
+            </div>
+
+            <div class="summary-cards">
+              <div class="sum-box">
+                <h3 id="weekFocus">0</h3>
+                <p>Total Focus Minutes</p>
+              </div>
+              <div class="sum-box">
+                <h3 id="weekSessions">0</h3>
+                <p>Total Sessions</p>
+              </div>
+              <div class="sum-box">
+                <h3 id="weekCompletion">0%</h3>
+                <p>Task Completion</p>
+              </div>
+            </div>
+
+            <div class="badge-summary">
+              <h3>🏅 Badge Status</h3>
+              <p id="badgeText">No badge yet</p>
+            </div>
+          </div>
+
+        </section>
+
+
+        <!-- CHART + TABLE -->
+        <section class="report-grid-2">
+
+          <!-- CHART -->
+          <div class="card">
+            <div class="card-head">
+              <h2>📊 Weekly Focus Chart</h2>
+              <p>Focus minutes per day (demo)</p>
+            </div>
+
+            <div class="bar-chart" id="barChart"></div>
+          </div>
+
+
+          <!-- TABLE -->
+          <div class="card">
+            <div class="card-head">
+              <h2>🗂️ Tasks Overview</h2>
+              <p>Tasks list (from Add Task page)</p>
+            </div>
+
+            <div class="table-wrap">
+              <table class="task-table">
+                <thead>
+                  <tr>
+                    <th>Task</th>
+                    <th>Date</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="taskTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </section>
+
+    </main>
+
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>
