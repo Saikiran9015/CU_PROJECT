@@ -362,7 +362,13 @@ const savedTaskList = document.getElementById("savedTaskList");
 const freeStart = document.getElementById("freeStart");
 const freeEnd = document.getElementById("freeEnd");
 const makeScheduleBtn = document.getElementById("makeScheduleBtn");
+const clearAllBtn = document.getElementById("clearAllBtn");
 const scheduleOutput = document.getElementById("scheduleOutput");
+
+// Specialized Sections
+const physicalSection = document.getElementById("physicalSection");
+const digitalSection = document.getElementById("digitalSection");
+const workTypeSelect = document.getElementById("workType");
 
 /* Sync User Profile */
 function syncUserProfile() {
@@ -395,7 +401,6 @@ const taskTitleInput = document.getElementById("taskTitle");
 if (taskTitleInput) {
   taskTitleInput.addEventListener("input", function () {
     const val = this.value.trim().toLowerCase();
-    const workTypeSelect = document.getElementById("workType");
 
     if (val.includes("daily running")) {
       if (workTypeSelect) workTypeSelect.value = "Physical";
@@ -410,7 +415,6 @@ if (taskTitleInput) {
       if (gpsStat) gpsStat.innerText = "GPS Location Tracking: ACTIVE 📍";
       if (speedAn) {
         speedAn.style.display = "block";
-        // Mock speed analysis
         const speedVal = document.getElementById("speedValue");
         if (speedVal) speedVal.innerText = (Math.random() * 5 + 4).toFixed(1);
       }
@@ -420,12 +424,10 @@ if (taskTitleInput) {
       if (digitalSection) digitalSection.style.display = "block";
       if (physicalSection) physicalSection.style.display = "none";
 
-      // Check VS Code tool
       const tools = document.querySelectorAll(".tool-check");
       tools.forEach(t => {
         if (t.value === "VS Code") t.checked = true;
       });
-      // Show VS Code Panel
       const vscodePanel = document.getElementById("vscodePanel");
       if (vscodePanel) {
         vscodePanel.style.display = "flex";
@@ -435,9 +437,9 @@ if (taskTitleInput) {
   });
 }
 
-if (workType) {
-  workType.addEventListener("change", () => {
-    const val = workType.value;
+if (workTypeSelect) {
+  workTypeSelect.addEventListener("change", () => {
+    const val = workTypeSelect.value;
     if (physicalSection) physicalSection.style.display = val === "Physical" ? "block" : "none";
     if (digitalSection) digitalSection.style.display = val === "Digital" ? "block" : "none";
   });
@@ -634,15 +636,15 @@ if (taskForm) {
    MAKE SCHEDULE (PROPER)
 -------------------------- */
 if (makeScheduleBtn) {
-  makeScheduleBtn.addEventListener("click", () => {
+  makeScheduleBtn.addEventListener("click", async () => {
 
     if (!freeStart.value || !freeEnd.value) {
       scheduleOutput.innerHTML = `<p style="color:orange;">⚠️ Please enter free start and end time.</p>`;
       return;
     }
 
-    const tasks = getTasks();
-    if (tasks.length === 0) {
+    const tasks = await getTasks();
+    if (!tasks || tasks.length === 0) {
       scheduleOutput.innerHTML = `<p style="color:orange;">⚠️ Add tasks first before scheduling.</p>`;
       return;
     }
@@ -733,6 +735,26 @@ if (makeScheduleBtn) {
       });
     }
 
+  });
+}
+
+if (clearAllBtn) {
+  clearAllBtn.addEventListener("click", async () => {
+    const email = getCurrentUserEmail();
+    if (!email) return;
+
+    if (confirm("Are you sure you want to delete ALL tasks? This cannot be undone.")) {
+      try {
+        const res = await fetch(`/api/tasks?email=${email}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.status || data.success) {
+          showNotification("All tasks cleared! 🗑️");
+          renderSavedTasks();
+        }
+      } catch (err) {
+        showNotification("Error clearing tasks", "error");
+      }
+    }
   });
 }
 

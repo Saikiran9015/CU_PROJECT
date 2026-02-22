@@ -210,6 +210,18 @@ def delete_task(task_id):
     except Exception as e:
         return jsonify({"success": False, "message": "Invalid ID or database error"}), 400
 
+@app.route('/api/tasks', methods=['DELETE'])
+@db_required
+def clear_all_tasks():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({"success": False, "message": "Email is required"}), 400
+    try:
+        result = tasks_col.delete_many({"email": email})
+        return jsonify({"success": True, "message": f"Cleared {result.deleted_count} tasks"})
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
 # --- SESSION API ---
 sessions_col = db['sessions']
 
