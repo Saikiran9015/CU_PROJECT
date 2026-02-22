@@ -330,6 +330,30 @@ def save_user_badges():
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
 
+# --- CHAT / BOT API ---
+
+@app.route('/api/chat', methods=['POST'])
+@db_required
+def api_chat():
+    data = request.json
+    email = data.get('email')
+    message = data.get('message')
+
+    if not email or not message:
+        return jsonify({"success": False, "message": "Missing email or message"}), 400
+
+    try:
+        # Simple bot response logic for now
+        bot_response = f"I received your message: '{message}'. How can I help you improve your skills today?"
+
+        return jsonify({
+            "success": True, 
+            "response": bot_response,
+            "timestamp": os.popen('date /t').read().strip()
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
 # --- PAGE ROUTES ---
 
 # Route for Landing Page
