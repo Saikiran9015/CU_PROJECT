@@ -3,6 +3,7 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
+from datetime import datetime
 
 from pymongo.errors import ConnectionFailure, ServerSelectionTimeoutError, OperationFailure
 import certifi
@@ -190,7 +191,7 @@ def add_task():
         return jsonify({"success": False, "message": "Missing fields"}), 400
     
     try:
-        data['created_at'] = os.popen('date /t').read().strip() # Simple timestamp
+        data['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         result = tasks_col.insert_one(data)
         data['_id'] = str(result.inserted_id)
         return jsonify({"success": True, "message": "Task saved!", "task": data})
@@ -349,7 +350,7 @@ def api_chat():
         return jsonify({
             "success": True, 
             "response": bot_response,
-            "timestamp": os.popen('date /t').read().strip()
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         })
     except Exception as e:
         return jsonify({"success": False, "message": str(e)}), 500
