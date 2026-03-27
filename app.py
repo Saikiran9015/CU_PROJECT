@@ -104,7 +104,7 @@ class MockDatabase:
         return MockCollection(coll_name, self.file_path)
 
 # MongoDB Setup
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://127.0.0.1:27017/")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://abbusaikiran53:Saikiran9493@cluster0.6iuyadj.mongodb.net/skilltrack_db?retryWrites=true&w=majority")
 DB_NAME = os.getenv("DB_NAME", "skilltrack_db")
 
 def get_db_safe():
@@ -123,8 +123,8 @@ if get_db_safe():
     print(">>> SUCCESS: Connected to MongoDB Atlas")
     db = client[DB_NAME]
 else:
-    print(">>> WARNING: MongoDB Atlas unreachable. Auto-switching to local_db.json")
-    db = MockDatabase("local_db.json")
+    print(">>> WARNING: MongoDB Atlas unreachable. Auto-switching to /tmp/local_db.json")
+    db = MockDatabase("/tmp/local_db.json")
 
 users_col = db['users']
 tasks_col = db['tasks']
