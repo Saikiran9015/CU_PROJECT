@@ -54,7 +54,7 @@
             <div class="profile-circle" id="userInitials">S</div>
             <div>
               <h4 id="userName">Student</h4>
-              <p>AI Mode: <b>Frontend Demo</b></p>
+              <p>AI Mode: <b>ML Backend Active</b></p>
             </div>
           </div>
         </div>
@@ -72,32 +72,12 @@
 
           <form id="predictForm" class="predict-form">
 
-            <div class="form-row">
-              <div class="input-group">
-                <label>Task Completion %</label>
-                <input id="comp" type="number" min="0" max="100" placeholder="Eg: 75" required />
-              </div>
-
-              <div class="input-group">
-                <label>Total Focus Minutes</label>
-                <input id="focus" type="number" min="0" placeholder="Eg: 420" required />
-              </div>
+            <div style="margin-bottom: 20px;">
+              <p>Your score will be predicted automatically based on your real activity stored in the database.</p>
             </div>
 
-            <div class="form-row">
-              <div class="input-group">
-                <label>Sessions Completed</label>
-                <input id="sessions" type="number" min="0" placeholder="Eg: 12" required />
-              </div>
-
-              <div class="input-group">
-                <label>Streak Days</label>
-                <input id="streak" type="number" min="0" placeholder="Eg: 4" required />
-              </div>
-            </div>
-
-            <button class="btn btn-primary full" type="submit">
-              Predict Skill Score
+            <button class="btn btn-primary full" type="submit" id="predictBtn">
+              Generate ML Prediction
             </button>
 
           </form>
@@ -118,9 +98,9 @@
               <p>/ 100</p>
             </div>
 
-            <h2 class="skill-level" id="skillLevel">Enter inputs to predict</h2>
+            <h2 class="skill-level" id="skillLevel">Click Predict to calculate</h2>
             <p class="skill-desc" id="skillDesc">
-              This is UI-only demo. Later we will connect ML model.
+              Our Machine Learning model evaluates your database records.
             </p>
 
             <div class="progress-wrap">

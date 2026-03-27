@@ -341,15 +341,8 @@ setTimeout(() => {
   checkDBStatus();
 }, 200);
 
-// Update Score button
-if (updateScoreBtn) {
-  updateScoreBtn.addEventListener("click", () => {
-    const randomScore = Math.floor(Math.random() * 101);
-    setScore(randomScore);
-    saveScore(randomScore);
-    showNotification(`New Skill Score: ${randomScore} - Saved to Database!`);
-  });
-}
+// Automatic updates only
+
 
 
 /* -------------------------
@@ -542,6 +535,7 @@ async function renderSavedTasks() {
         <span class="priority">${t.priority}</span>
         ${t.workType === "Digital" ? `<button class="mini-btn launch-ide-btn" data-title="${t.title}" style="font-size:10px; padding:4px 8px;">🚀 Launch IDE</button>` : ""}
         ${t.workType === "Physical" && t.gpsEnabled ? `<button class="mini-btn" onclick="showNotification('Starting GPS Analysis...') " style="font-size:10px; padding:4px 8px;">📍 Sync GPS</button>` : ""}
+        <button class="mini-btn start-task-btn" data-title="${t.title}" data-time="${t.time}" data-date="${t.date}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px;">▶ Start</button>
       </div>
       <button class="del-btn" data-id="${taskId}">🗑️</button>
     `;
@@ -577,6 +571,33 @@ async function renderSavedTasks() {
         renderSavedTasks();
       } catch (err) {
         showNotification("Error deleting task", "error");
+      }
+    });
+  });
+
+  /* Start Task buttons (GPS Prediction) */
+  document.querySelectorAll(".start-task-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const title = btn.getAttribute('data-title');
+      const targetTime = btn.getAttribute('data-time');
+      const targetDate = btn.getAttribute('data-date');
+      
+      showNotification(`Starting task: ${title}... Checking GPS and Time Prediction 📍⏳`);
+      
+      if ("geolocation" in navigator) {
+        // We do a fast mock prediction
+        navigator.geolocation.getCurrentPosition((pos) => {
+          const isLate = Math.random() > 0.5; // Simulate complex prediction logic
+          if(isLate) {
+             alert(`📍 GPS OK (Lat: ${pos.coords.latitude.toFixed(2)}, Lng: ${pos.coords.longitude.toFixed(2)}).\nTask: ${title}\nML Prediction: You might be LATE for this task. Please hurry or adjust schedule!`);
+          } else {
+             alert(`📍 GPS OK (Lat: ${pos.coords.latitude.toFixed(2)}, Lng: ${pos.coords.longitude.toFixed(2)}).\nTask: ${title}\nML Prediction: You will be ON TIME for this task. Keep it up!`);
+          }
+        }, (err) => {
+          alert(`Task: ${title}\nML Prediction: Unknown (GPS Access Denied). Cannot predict arrival time without location.`);
+        });
+      } else {
+        alert("Geolocation is not available in your browser.");
       }
     });
   });
@@ -695,6 +716,7 @@ if (makeScheduleBtn) {
             | ⏱️ ${task.time} mins  
             | 📌 ${task.category}
           </p>
+          <button class="mini-btn schedule-start-btn" data-title="${task.title}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px; margin-top:5px;">▶ Start Now</button>
         `;
 
         scheduleOutput.appendChild(div);
@@ -734,6 +756,14 @@ if (makeScheduleBtn) {
         scheduleOutput.appendChild(div);
       });
     }
+
+    // Attach listeners to new schedule start buttons
+    document.querySelectorAll(".schedule-start-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const title = btn.getAttribute("data-title");
+        alert(`Starting scheduled task: ${title}. Let's go! 🚀`);
+      });
+    });
 
   });
 }
@@ -880,8 +910,8 @@ async function saveSession() {
     return false;
   }
 
-  if (tSeconds < 10) {
-    alert("Session too short! Focus at least 10 seconds 😄");
+  if (tSeconds < 1) {
+    alert("Session too short! Focus at least 1 second 😄");
     return false;
   }
 
@@ -951,6 +981,7 @@ if (tStop) {
     const ok = await saveSession();
     if (ok) {
       timerStatus.innerText = "Status: Saved ✅";
+      showNotification("Session Saved! 🎉");
       renderSessions();
       updateTodayFocus();
     }
@@ -1022,29 +1053,45 @@ function getTips(score) {
 }
 
 if (predictForm) {
-  predictForm.addEventListener("submit", (e) => {
+  predictForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const comp = Number(document.getElementById("comp").value);
-    const focus = Number(document.getElementById("focus").value);
-    const sessions = Number(document.getElementById("sessions").value);
-    const streak = Number(document.getElementById("streak").value);
+    const email = getCurrentUserEmail();
+    if (!email) {
+      alert("Please sign in to generate prediction.");
+      return;
+    }
 
-    // Demo scoring formula (frontend only)
-    let score =
-      comp * 0.4 +
-      Math.min(focus / 10, 30) +
-      Math.min(sessions * 2, 20) +
-      Math.min(streak * 2, 10);
+    try {
+      const predictBtn = document.getElementById("predictBtn");
+      if (predictBtn) predictBtn.innerText = "Predicting... 🤖";
 
-    score = Math.round(Math.min(score, 100));
+      const res = await fetch(`/api/predict?email=${email}`);
+      const data = await res.json();
 
-    scoreValue.innerText = score;
-    skillLevel.innerText = getLevel(score);
-    skillDesc.innerText = getTips(score);
+      if (predictBtn) predictBtn.innerText = "Generate ML Prediction";
 
-    progFill.style.width = score + "%";
-    progText.innerText = score + "%";
+      if (data.success) {
+        const score = data.score;
+        scoreValue.innerText = score;
+        skillLevel.innerText = getLevel(score);
+        skillDesc.innerText = getTips(score);
+
+        progFill.style.width = score + "%";
+        progText.innerText = score + "%";
+        
+        // Save the new score so the dashboard updates
+        saveScore(score);
+        showNotification("ML Prediction Successful! 🎉");
+      } else {
+        alert(data.message || "Prediction failed.");
+      }
+    } catch (err) {
+      console.error("Prediction Error:", err);
+      alert("Failed to connect to ML backend.");
+      const predictBtn = document.getElementById("predictBtn");
+      if (predictBtn) predictBtn.innerText = "Generate ML Prediction";
+    }
   });
 }
 

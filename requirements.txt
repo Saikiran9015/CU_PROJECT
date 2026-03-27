@@ -3,3 +3,5 @@ pymongo
 flask-cors
 python-dotenv
 certifi
+scikit-learn
+numpy

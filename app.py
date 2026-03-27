@@ -11,6 +11,28 @@ import certifi
 # Load environment variables
 load_dotenv()
 
+try:
+    import numpy as np
+    from sklearn.linear_model import LinearRegression
+    HAS_ML = True
+    
+    # Train a dummy model on startup to simulate a real ML model evaluating the history
+    # Features: [completion_pct, total_focus_mins, total_sessions, streak_days]
+    dummy_X = np.array([
+        [0, 0, 0, 0],
+        [30, 60, 2, 1],
+        [60, 200, 8, 3],
+        [85, 450, 18, 7],
+        [100, 700, 30, 14]
+    ])
+    # Target Scores
+    dummy_y = np.array([10, 40, 65, 88, 100])
+    
+    ml_model = LinearRegression()
+    ml_model.fit(dummy_X, dummy_y)
+except ImportError:
+    HAS_ML = False
+
 app = Flask(__name__, 
             static_folder='static', 
             template_folder='templets')
@@ -308,6 +330,53 @@ def get_db_status():
         "status": "Online" if is_atlas else "Offline (Local Sync Active)",
         "type": "MongoDB Atlas" if is_atlas else "Local JSON Fallback"
     })
+
+@app.route('/api/predict', methods=['GET'])
+@db_required
+def predict_score():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({"success": False, "message": "Email is required"}), 400
+        
+    try:
+        # Fetch actual DB statistics for the user
+        user_tasks = list(tasks_col.find({"email": email}))
+        user_sessions = list(sessions_col.find({"email": email}))
+        
+        # Calculate features
+        total_tasks = len(user_tasks)
+        completed_tasks = sum(1 for t in user_tasks if t.get('status') == 'Completed')
+        completion_pct = int((completed_tasks / total_tasks * 100)) if total_tasks > 0 else 0
+        
+        total_focus_mins = sum(s.get('minutes', 0) for s in user_sessions)
+        total_sessions = len(user_sessions)
+        
+        # Mock streak calculation based on sessions
+        streak_days = min(total_sessions // 2, 10)
+        
+        if not HAS_ML:
+            # Fallback heuristic if scikit-learn isn't installed
+            predicted_score = (completion_pct * 0.4) + min(total_focus_mins / 10, 30) + min(total_sessions * 2, 20) + min(streak_days * 2, 10)
+        else:
+            # Prepare data for ML Model
+            features = np.array([[completion_pct, total_focus_mins, total_sessions, streak_days]])
+            predicted_score = ml_model.predict(features)[0]
+            
+        # Bound score between 0 and 100
+        final_score = int(max(0, min(100, predicted_score)))
+        
+        return jsonify({
+            "success": True, 
+            "score": final_score,
+            "features_used": {
+                "completion_pct": completion_pct,
+                "total_focus_mins": total_focus_mins,
+                "total_sessions": total_sessions,
+                "streak_days": streak_days
+            }
+        })
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
 
 # --- BADGES API ---
 badges_col = db['badges']
