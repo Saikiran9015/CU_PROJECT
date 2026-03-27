@@ -104,8 +104,8 @@ class MockDatabase:
         return MockCollection(coll_name, self.file_path)
 
 # MongoDB Setup
-MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://abbusaikiran53:Saikiran9493@cluster0.6iuyadj.mongodb.net/skilltrack_db?retryWrites=true&w=majority")
-DB_NAME = os.getenv("DB_NAME", "skilltrack_db")
+MONGO_URI = os.getenv("MONGO_URI", "mongodb+srv://infobyte:Saikiran9493@infobyte.t54p2fi.mongodb.net/?appName=Infobyte")
+DB_NAME = os.getenv("DB_NAME", "Infobyte")
 
 def get_db_safe():
     try:
