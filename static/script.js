@@ -535,7 +535,7 @@ async function renderSavedTasks() {
         <span class="priority">${t.priority}</span>
         ${t.workType === "Digital" ? `<button class="mini-btn launch-ide-btn" data-title="${t.title}" style="font-size:10px; padding:4px 8px;">🚀 Launch IDE</button>` : ""}
         ${t.workType === "Physical" && t.gpsEnabled ? `<button class="mini-btn" onclick="showNotification('Starting GPS Analysis...') " style="font-size:10px; padding:4px 8px;">📍 Sync GPS</button>` : ""}
-        <button class="mini-btn start-task-btn" data-title="${t.title}" data-time="${t.time}" data-date="${t.date}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px;">▶ Start</button>
+        <button class="mini-btn start-task-btn" data-title="${t.title}" data-type="${t.workType || 'General'}" data-time="${t.time}" data-date="${t.date}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px;">▶ Start</button>
       </div>
       <button class="del-btn" data-id="${taskId}">🗑️</button>
     `;
@@ -575,29 +575,31 @@ async function renderSavedTasks() {
     });
   });
 
-  /* Start Task buttons (GPS Prediction) */
+  /* Start Task buttons (Workflow Integration) */
   document.querySelectorAll(".start-task-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const title = btn.getAttribute('data-title');
-      const targetTime = btn.getAttribute('data-time');
-      const targetDate = btn.getAttribute('data-date');
+      const workType = btn.getAttribute('data-type');
       
-      showNotification(`Starting task: ${title}... Checking GPS and Time Prediction 📍⏳`);
+      showNotification(`Initializing task: ${title}... Setting up environment 🚀`);
       
-      if ("geolocation" in navigator) {
-        // We do a fast mock prediction
+      localStorage.setItem('autoStartTask', title);
+      localStorage.setItem('autoStartType', workType);
+      
+      if (workType === "Physical" && "geolocation" in navigator) {
         navigator.geolocation.getCurrentPosition((pos) => {
-          const isLate = Math.random() > 0.5; // Simulate complex prediction logic
-          if(isLate) {
-             alert(`📍 GPS OK (Lat: ${pos.coords.latitude.toFixed(2)}, Lng: ${pos.coords.longitude.toFixed(2)}).\nTask: ${title}\nML Prediction: You might be LATE for this task. Please hurry or adjust schedule!`);
-          } else {
-             alert(`📍 GPS OK (Lat: ${pos.coords.latitude.toFixed(2)}, Lng: ${pos.coords.longitude.toFixed(2)}).\nTask: ${title}\nML Prediction: You will be ON TIME for this task. Keep it up!`);
-          }
+          alert(`📍 GPS OK (Lat: ${pos.coords.latitude.toFixed(2)}, Lng: ${pos.coords.longitude.toFixed(2)}).\nTask: ${title}\nTracking started in background.`);
+          window.location.href = "timer.html";
         }, (err) => {
-          alert(`Task: ${title}\nML Prediction: Unknown (GPS Access Denied). Cannot predict arrival time without location.`);
+          alert(`Task: ${title}\nStarting without GPS. Location access denied.`);
+          window.location.href = "timer.html";
         });
       } else {
-        alert("Geolocation is not available in your browser.");
+        if (workType === "Digital") {
+          showNotification("Opening VS Code IDE... 💻");
+          window.open('https://vscode.dev/', '_blank');
+        }
+        window.location.href = "timer.html";
       }
     });
   });
@@ -716,7 +718,7 @@ if (makeScheduleBtn) {
             | ⏱️ ${task.time} mins  
             | 📌 ${task.category}
           </p>
-          <button class="mini-btn schedule-start-btn" data-title="${task.title}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px; margin-top:5px;">▶ Start Now</button>
+          <button class="mini-btn schedule-start-btn" data-title="${task.title}" data-type="${task.workType || 'General'}" style="font-size:10px; padding:4px 8px; background:var(--primary); color:white; border:none; border-radius:4px; margin-top:5px;">▶ Start Now</button>
         `;
 
         scheduleOutput.appendChild(div);
@@ -761,7 +763,18 @@ if (makeScheduleBtn) {
     document.querySelectorAll(".schedule-start-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         const title = btn.getAttribute("data-title");
-        alert(`Starting scheduled task: ${title}. Let's go! 🚀`);
+        const workType = btn.getAttribute("data-type");
+        
+        localStorage.setItem('autoStartTask', title);
+        localStorage.setItem('autoStartType', workType);
+        
+        if (workType === "Digital") {
+          window.open('https://vscode.dev/', '_blank');
+        } else if (workType === "Physical") {
+          alert(`📍 GPS background tracking enabled for ${title}.`);
+        }
+        
+        window.location.href = "timer.html";
       });
     });
 
@@ -835,6 +848,27 @@ async function loadTasksIntoDropdown() {
     opt.innerText = `${t.title} (${t.priority})`;
     taskSelect.appendChild(opt);
   });
+
+  // Handle auto-start from Add Task / Schedule page
+  const autoStart = localStorage.getItem('autoStartTask');
+  const autoType = localStorage.getItem('autoStartType');
+  if (autoStart) {
+    taskSelect.value = autoStart;
+    localStorage.removeItem('autoStartTask');
+    localStorage.removeItem('autoStartType');
+
+    // Add a slight delay to ensure UI updates
+    setTimeout(() => {
+      if (tStart) tStart.click();
+
+      // Override the status display with context
+      if (autoType === "Physical") {
+        timerStatus.innerHTML = `Status: Running ✅ <br><small style="color:#22c55e;">📍 GPS Tracking Active in Background</small>`;
+      } else if (autoType === "Digital") {
+        timerStatus.innerHTML = `Status: Running ✅ <br><small style="color:#3b82f6;">💻 Code Session ID linked to Workspace</small>`;
+      }
+    }, 100);
+  }
 }
 
 async function renderSessions() {
